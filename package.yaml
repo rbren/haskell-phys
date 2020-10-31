@@ -21,6 +21,8 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 
+
+
 library:
   source-dirs: src
 
@@ -34,7 +36,10 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - hs-phys
-
+    - diagrams
+    - diagrams-lib
+    - diagrams-svg
+    - diagrams-cairo
 tests:
   hs-phys-test:
     main:                Spec.hs
