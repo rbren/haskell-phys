@@ -6,7 +6,7 @@ module Main where
 import Data.Typeable
 import Lib.SpaceVec
 import Lib.Particle
-import Lib.State
+
 import Lib.Systems.System
 import Lib.Systems.MassOnASpring
 
@@ -14,7 +14,7 @@ import Diagrams.Prelude
 import Diagrams.Backend.Cairo.CmdLine
 import Diagrams.Prelude
 
-sys = massOnASpring 90.0 1.0 1.0
+sys = massOnASpring 900.0 1.0 1.0
 
 delta = 0.01
 endTime = 10
@@ -22,7 +22,7 @@ startTime = time (state sys)
 --steps = toInteger ((endTime - startTime) / delta)
 steps = 500
 
-solution = iterate (eulerStep delta) sys
+solution = iterate (rk4Step delta) sys
 systemSteps = take steps solution
 
 getCircle :: System -> Diagram B

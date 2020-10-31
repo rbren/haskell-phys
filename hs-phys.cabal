@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 48c6ffcab3d6533f52f86c9f9d9bfb4b831aeb328e7d280983b0696b3b13f4aa
+-- hash: a373e764c5bca6574e9f2b1eed5a23be36fc26de215859e962c972c473cdd99e
 
 name:           hs-phys
 version:        0.1.0.0
@@ -27,7 +27,6 @@ library
   exposed-modules:
       Lib.Particle
       Lib.SpaceVec
-      Lib.State
       Lib.Systems.MassOnASpring
       Lib.Systems.System
   other-modules:
