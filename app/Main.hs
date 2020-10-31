@@ -5,8 +5,10 @@ module Main where
 
 import Data.Typeable
 import Lib.SpaceVec
-import Lib.System
 import Lib.Particle
+import Lib.State
+import Lib.Systems.System
+import Lib.Systems.MassOnASpring
 
 import Diagrams.Prelude
 import Diagrams.Backend.Cairo.CmdLine
