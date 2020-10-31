@@ -9,14 +9,25 @@ import Lib.Particle
 
 import Lib.Systems.System
 import Lib.Systems.MassOnASpring
+import Lib.Systems.Gravitation
 
 import Diagrams.Prelude
 import Diagrams.Backend.Cairo.CmdLine
 import Diagrams.Prelude
 
-sys = massOnASpring 900.0 1.0 1.0
+-- sys = massOnASpring 900.0 1.0 1.0
 
-delta = 0.01
+massOfEarth = 5.98e24
+massOfMoon = 7.348e22
+earthMoonDist = 384.4e6
+moonVelocity = 1.022e3
+moon = Particle massOfMoon (SpaceVec earthMoonDist 0 0) (SpaceVec 0 moonVelocity 0)
+sys = gravitation massOfEarth moon
+
+boxSize = earthMoonDist * 3
+circleSize = boxSize / 50
+
+delta = 1000 * 30
 endTime = 10
 startTime = time (state sys)
 --steps = toInteger ((endTime - startTime) / delta)
@@ -26,14 +37,14 @@ solution = iterate (rk4Step delta) sys
 systemSteps = take steps solution
 
 getCircle :: System -> Diagram B
-getCircle sys = circle 0.1 # lc white # translate (r2 (xLoc, yLoc))
+getCircle sys = circle circleSize # lc white # translate (r2 (xLoc, yLoc))
   where
     p = pos (particle (state sys))
     xLoc = x p
     yLoc = y p
 
 getLabel :: System -> Diagram B
-getLabel sys = text label # fontSizeL 0.1 # fc white # alignBL
+getLabel sys = text label # fontSizeL circleSize # fc white # alignBL
   where
     t = time (state sys)
     bump = t * 1000
@@ -45,8 +56,9 @@ gif :: [(Diagram B, Int)]
 gif = map (\sys -> (getSystemDiagram sys, 0)) systemSteps
   where
     origin = p2 (0.0, 0.0)
-    bl = p2 (-1.8, -1.8)
-    box = square 4 # lw 0.5 # lc white
+    labelPos = -0.9 * boxSize / 2.0
+    bl = p2 (labelPos, labelPos)
+    box = square boxSize # lw 0.5 # lc white
     getSystemDiagram :: System -> Diagram B
     getSystemDiagram sys = position [(origin, getCircle sys), (bl, getLabel sys)] <> box
 
