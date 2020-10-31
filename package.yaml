@@ -25,6 +25,12 @@ dependencies:
 
 library:
   source-dirs: src
+  dependencies:
+  - diagrams
+  - diagrams-lib
+  - diagrams-svg
+  - diagrams-cairo
+  - vector
 
 executables:
   hs-phys-exe:
@@ -36,10 +42,8 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - hs-phys
-    - diagrams
-    - diagrams-lib
-    - diagrams-svg
     - diagrams-cairo
+
 tests:
   hs-phys-test:
     main:                Spec.hs

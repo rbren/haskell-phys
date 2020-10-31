@@ -2,4 +2,7 @@
 *.o
 .stack-work/
 *~
+
+hs-phys.cabal
+
 out.gif
