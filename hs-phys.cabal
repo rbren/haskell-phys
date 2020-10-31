@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 715e28b0afb92de0d4a41884191af330eeb7b16773bcfc26ebed58c218da831e
+
+name:           hs-phys
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/hs-phys#readme>
+homepage:       https://github.com/githubuser/hs-phys#readme
+bug-reports:    https://github.com/githubuser/hs-phys/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/hs-phys
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_hs_phys
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable hs-phys-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_hs_phys
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , hs-phys
+  default-language: Haskell2010
+
+test-suite hs-phys-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_hs_phys
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , hs-phys
+  default-language: Haskell2010
