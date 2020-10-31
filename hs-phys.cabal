@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 715e28b0afb92de0d4a41884191af330eeb7b16773bcfc26ebed58c218da831e
+-- hash: 8b81c91825abd66e9ee8e8e7f31e01c0beafe7d450652fe27d149f77f76e1c43
 
 name:           hs-phys
 version:        0.1.0.0
@@ -15,11 +15,9 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
@@ -27,7 +25,9 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Lib.Particle
+      Lib.SpaceVec
+      Lib.System
   other-modules:
       Paths_hs_phys
   hs-source-dirs:
@@ -52,6 +52,7 @@ test-suite hs-phys-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Lib.SpaceVecSpec
       Paths_hs_phys
   hs-source-dirs:
       test
