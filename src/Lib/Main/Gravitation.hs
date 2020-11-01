@@ -10,7 +10,6 @@ import Lib.Systems.Gravitation
 
 import Diagrams.Prelude
 import Diagrams.Backend.Cairo.CmdLine
-import Diagrams.Prelude
 
 -- sys = massOnASpring 900.0 1.0 1.0
 
