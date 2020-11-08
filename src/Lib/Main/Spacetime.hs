@@ -3,6 +3,8 @@ module Lib.Main.Spacetime where
 import Lib.SpaceVec
 import Lib.SpacetimeVec
 
-s = SpaceVec 1 1 1
-st = SpacetimeVec 1 s
+st = SpacetimeVec 1 (SpaceVec 1 0 0)
+v = SpaceVec 0.5 0 0
+st' = transformCoordinates st v
 
+mainFuncST = print st'

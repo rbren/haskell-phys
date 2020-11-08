@@ -6,4 +6,4 @@ module Main where
 import Lib.Main.Spacetime
 import Diagrams.Backend.Cairo.CmdLine
 
-main = print st
+main = mainFuncST
