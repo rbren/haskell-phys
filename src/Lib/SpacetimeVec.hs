@@ -4,9 +4,6 @@ import Debug.Trace
 
 import Lib.SpaceVec
 
-speedOfLight = 3e8
-speedOfLightSquared = speedOfLight * speedOfLight
-
 data SpacetimeVec = SpacetimeVec {
   t :: Double,
   r :: SpaceVec
@@ -31,7 +28,7 @@ instance Eq SpacetimeVec where
 ($*) (SpacetimeVec t r) c = SpacetimeVec (c*t) (c*^r)
 
 ($.$) :: SpacetimeVec -> SpacetimeVec -> Double
-($.$) (SpacetimeVec t r) (SpacetimeVec t' r') = -t*t'*speedOfLightSquared + r^.^r'
+($.$) (SpacetimeVec t r) (SpacetimeVec t' r') = -t*t' + r^.^r'
 
 zeroSTV = SpacetimeVec 0 (SpaceVec 0 0 0)
 
@@ -41,14 +38,14 @@ transformCoordinates (SpacetimeVec t r) velocity = traceShow("gamma", gamma) $ S
     -- https://en.wikipedia.org/wiki/Lorentz_transformation#Vector_transformations
     speed = magnitude velocity
     direction = velocity ^* (1.0 / speed)
-    beta = (speed * speed) / speedOfLightSquared
+    beta = speed * speed
     gamma = 1.0 / (sqrt (1.0 - beta))
     rParallel = (r ^.^ direction) *^ direction
     rPerpendicular = r ^-^ rParallel
     rParallel' = gamma *^ (rParallel ^-^ (velocity ^* t))
     rPerpendicular' = rPerpendicular
     r' = rParallel' ^+^ rPerpendicular'
-    t' = gamma * (t - (velocity ^.^ r) / speedOfLightSquared)
+    t' = gamma * (t - (velocity ^.^ r))
 
 findCollocatedVelocity :: SpacetimeVec -> SpaceVec
 findCollocatedVelocity (SpacetimeVec t r) = v
@@ -59,7 +56,7 @@ findCotemporaneousVelocity :: SpacetimeVec -> SpaceVec
 findCotemporaneousVelocity (SpacetimeVec t r) = v
   where
     direction = r ^* (1.0 / magnitude r)
-    speed = speedOfLightSquared * t / (magnitude r)
+    speed = t / (magnitude r)
     v = speed *^ direction
 
 makeCollocated :: SpacetimeVec -> SpacetimeVec

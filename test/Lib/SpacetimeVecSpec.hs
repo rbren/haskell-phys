@@ -4,6 +4,7 @@ import Test.Hspec
 import Test.QuickCheck
 import Test.HUnit.Approx
 
+import Lib.NaturalUnits
 import Lib.SpacetimeVec
 import Lib.SpaceVec
 
@@ -24,7 +25,7 @@ spec :: Spec
 spec = do
   describe "SpacetimeVec" $ do
     it "can find collocated reference frame" $ do
-      let displacement = SpacetimeVec 1.0 (SpaceVec 1 1 1)
+      let displacement = si2nuSpacetime (SpacetimeVec 1.0 (SpaceVec 1 1 1))
       let collocSpeed = findCollocatedVelocity displacement
       let colloc = transformCoordinates displacement collocSpeed
       let collocLoc = r colloc
@@ -34,7 +35,7 @@ spec = do
       (z collocLoc) `shouldBeAbout` (0.0)
 
     it "can find cotemporaneous reference frame" $ do
-      let displacement = SpacetimeVec 1.0 (SpaceVec 10000000000 0.0 0.0)
+      let displacement = si2nuSpacetime (SpacetimeVec 1.0 (SpaceVec 10000000000 0.0 0.0))
       let cotempSpeed = findCotemporaneousVelocity displacement
       let cotemp = transformCoordinates displacement cotempSpeed
       print ("cotemp " ++ show cotemp)
@@ -42,36 +43,29 @@ spec = do
 
     -- https://oyc.yale.edu/sites/default/files/problem_set_7_solutions_4.pdf
     it "transforms time (problem 1)" $ do
-      let dist = 1.493e+11
-      let time = 120
+      let dist = si2nuDistance 1.493e+11
+      let time = si2nuTime 120
       let evtA = SpacetimeVec 0.0 (SpaceVec 0 0 0)
       let evtB = SpacetimeVec time (SpaceVec dist 0 0)
       let diff = evtB $-$ evtA
-      let speed = 0.8 * speedOfLight
+      let speed = 0.8
       let obsMovingAToB = SpaceVec speed 0 0
       let obsMovingBToA = SpaceVec (-speed) 0 0
-      let measAToB = transformCoordinates diff obsMovingAToB
-      let measBToA = transformCoordinates diff obsMovingBToA
-      let beta = speed * speed / (speedOfLight * speedOfLight)
-      let gamma = 1 / sqrt (1.0 - beta)
+      let measAToB = nu2siSpacetime (transformCoordinates diff obsMovingAToB)
+      let measBToA = nu2siSpacetime (transformCoordinates diff obsMovingBToA)
       (t measAToB) `shouldBeAbout` (-7.73333 * 60)
       (t measBToA) `shouldBeAbout` (14.4 * 60)
 
     it "transforms space and time (problem 4 inverted)" $ do
-      let evtRMeas = SpacetimeVec 0.0 (SpaceVec 1210 0 0)
-      let evtBMeas = SpacetimeVec 4.96e-6 (SpaceVec 480 0 0)
+      let evtRMeas = si2nuSpacetime (SpacetimeVec 0.0 (SpaceVec 1210 0 0))
+      let evtBMeas = si2nuSpacetime (SpacetimeVec 4.96e-6 (SpaceVec 480 0 0))
       let diff = evtBMeas $-$ evtRMeas
       let collocVel = findCollocatedVelocity diff
-      (x collocVel) `shouldBeAbout` (-1.4717e8) -- answer to part 1
+      (x (nu2siVelocity collocVel)) `shouldBeAbout` (-1.4717e8) -- answer to part 1
 
-      let colloc = transformCoordinates diff collocVel
-      print ("vel " ++ show collocVel)
-      print ("displacement " ++ show diff)
+      let colloc = nu2siSpacetime (transformCoordinates diff collocVel)
       let stDist = diff $.$ diff
-      print ("displacement dist " ++ show stDist)
-      print ("transformed " ++ show colloc)
       let clDist = colloc $.$ colloc
-      print ("transformed dist " ++ show clDist)
       (x (r colloc)) `shouldBeAbout` 0.0
       y (r colloc) `shouldBe` 0.0
       z (r colloc) `shouldBe` 0.0
@@ -81,8 +75,8 @@ spec = do
       -- We have to invert, because if we convert rest length to moving length,
       -- the endpoint measurements are no longer cotemporaneous.
       -- This doesn't matter when at rest wrt to the thing being measured.
-      let speed = -0.8 * speedOfLight
+      let speed = -0.8
       let rocketVel = SpaceVec speed 0 0
       let rocketLengthObsAtSpeed = SpacetimeVec 0.0 (SpaceVec 0.6 0 0)
       let rocketLengthRest = transformCoordinates rocketLengthObsAtSpeed rocketVel
-      x (r rocketLengthRest) `shouldBe` 1.0
+      x (r rocketLengthRest) `shouldBeAbout` 1.0
