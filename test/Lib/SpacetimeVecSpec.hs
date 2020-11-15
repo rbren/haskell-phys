@@ -77,18 +77,9 @@ spec = do
       z (r colloc) `shouldBe` 0.0
       (t colloc) `shouldBeAbout` 4.32e-6
 
-    it "transforms length (problem 5)" $ do
+    it "transforms length (problem 5 inverted)" $ do
       let speed = -0.8 * speedOfLight
       let rocketVel = SpaceVec speed 0 0
-      let rocketStartPoint = SpacetimeVec 0.0 (SpaceVec 0 0 0)
-      let rocketEndPoint = SpacetimeVec 0.0 (SpaceVec 1.0 0 0)
-      let rocketStartPoint' = makeCotemporaneous (transformCoordinates rocketStartPoint rocketVel)
-      let rocketEndPoint' = makeCotemporaneous (transformCoordinates rocketEndPoint rocketVel)
-      print ("start " ++ show rocketStartPoint')
-      print ("end " ++ show rocketEndPoint')
-      let rocketLengthObs = rocketEndPoint' $-$ rocketStartPoint'
-      let cotempObs = makeCotemporaneous rocketLengthObs
-      print ("obs" ++ show rocketLengthObs)
-      print ("cot" ++ show cotempObs)
-      x (r cotempObs) `shouldBe` 0.6
-
+      let rocketLengthObsAtSpeed = SpacetimeVec 0.0 (SpaceVec 0.6 0 0)
+      let rocketLengthRest = transformCoordinates rocketLengthObsAtSpeed rocketVel
+      x (r rocketLengthRest) `shouldBe` 1.0
