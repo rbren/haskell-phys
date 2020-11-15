@@ -78,6 +78,9 @@ spec = do
       (t colloc) `shouldBeAbout` 4.32e-6
 
     it "transforms length (problem 5 inverted)" $ do
+      -- We have to invert, because if we convert rest length to moving length,
+      -- the endpoint measurements are no longer cotemporaneous.
+      -- This doesn't matter when at rest wrt to the thing being measured.
       let speed = -0.8 * speedOfLight
       let rocketVel = SpaceVec speed 0 0
       let rocketLengthObsAtSpeed = SpacetimeVec 0.0 (SpaceVec 0.6 0 0)
