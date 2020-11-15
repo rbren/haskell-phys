@@ -59,11 +59,11 @@ findCotemporaneousVelocity :: SpacetimeVec -> SpaceVec
 findCotemporaneousVelocity (SpacetimeVec t r) = v
   where
     direction = r ^* (1.0 / magnitude r)
-    speed = (magnitude r) / t
+    speed = speedOfLightSquared * t / (magnitude r)
     v = speed *^ direction
 
-findCollocated :: SpacetimeVec -> SpacetimeVec
-findCollocated s = transformCoordinates s (findCollocatedVelocity s)
+makeCollocated :: SpacetimeVec -> SpacetimeVec
+makeCollocated s = transformCoordinates s (findCollocatedVelocity s)
 
-findCotemporaneous :: SpacetimeVec -> SpacetimeVec
-findCotemporaneous s = transformCoordinates s (findCotemporaneousVelocity s)
+makeCotemporaneous :: SpacetimeVec -> SpacetimeVec
+makeCotemporaneous s = transformCoordinates s (findCotemporaneousVelocity s)

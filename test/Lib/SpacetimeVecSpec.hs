@@ -34,7 +34,7 @@ spec = do
       (z collocLoc) `shouldBeAbout` (0.0)
 
     it "can find cotemporaneous reference frame" $ do
-      let displacement = SpacetimeVec 1.0 (SpaceVec 1 1 1)
+      let displacement = SpacetimeVec 1.0 (SpaceVec 10000000000 0.0 0.0)
       let cotempSpeed = findCotemporaneousVelocity displacement
       let cotemp = transformCoordinates displacement cotempSpeed
       print ("cotemp " ++ show cotemp)
@@ -82,10 +82,13 @@ spec = do
       let rocketVel = SpaceVec speed 0 0
       let rocketStartPoint = SpacetimeVec 0.0 (SpaceVec 0 0 0)
       let rocketEndPoint = SpacetimeVec 0.0 (SpaceVec 1.0 0 0)
-      let rocketStartPoint' = transformCoordinates rocketStartPoint rocketVel
-      let rocketEndPoint' = transformCoordinates rocketEndPoint rocketVel
+      let rocketStartPoint' = makeCotemporaneous (transformCoordinates rocketStartPoint rocketVel)
+      let rocketEndPoint' = makeCotemporaneous (transformCoordinates rocketEndPoint rocketVel)
       print ("start " ++ show rocketStartPoint')
       print ("end " ++ show rocketEndPoint')
       let rocketLengthObs = rocketEndPoint' $-$ rocketStartPoint'
-      x (r rocketLengthObs) `shouldBe` 0.6
+      let cotempObs = makeCotemporaneous rocketLengthObs
+      print ("obs" ++ show rocketLengthObs)
+      print ("cot" ++ show cotempObs)
+      x (r cotempObs) `shouldBe` 0.6
 
