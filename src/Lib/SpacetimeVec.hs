@@ -49,16 +49,21 @@ transformCoordinates (SpacetimeVec t r) velocity = traceShow("gamma", gamma) $ S
     rPerpendicular' = rPerpendicular
     r' = rParallel' ^+^ rPerpendicular'
     t' = gamma * (t - (velocity ^.^ r) / speedOfLightSquared)
-    {-
-    speed = (x velocity)
-    x0 = (x r)
-    t' = gamma * (t - (speed * x0) / speedOfLightSquared)
-    x' = gamma * (x0 - speed * t)
-    r' = SpaceVec x' 0 0
-    -}
 
-findColocated :: SpacetimeVec -> SpaceVec
-findColocated (SpacetimeVec t r) = v
+findCollocatedVelocity :: SpacetimeVec -> SpaceVec
+findCollocatedVelocity (SpacetimeVec t r) = v
   where
     v = r ^* (1/t)
 
+findCotemporaneousVelocity :: SpacetimeVec -> SpaceVec
+findCotemporaneousVelocity (SpacetimeVec t r) = v
+  where
+    direction = r ^* (1.0 / magnitude r)
+    speed = (magnitude r) / t
+    v = speed *^ direction
+
+findCollocated :: SpacetimeVec -> SpacetimeVec
+findCollocated s = transformCoordinates s (findCollocatedVelocity s)
+
+findCotemporaneous :: SpacetimeVec -> SpacetimeVec
+findCotemporaneous s = transformCoordinates s (findCotemporaneousVelocity s)
