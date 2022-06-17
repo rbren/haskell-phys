@@ -31,6 +31,11 @@ library:
   - diagrams-svg
   - diagrams-cairo
   - vector
+  - hmatrix
+  - hmatrix-vector-sized
+  - vector-sized
+  - ad
+  - ghc-typelits-knownnat
 
 executables:
   hs-phys-exe:
